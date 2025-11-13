@@ -1,35 +1,30 @@
 # storage.py
-import json
-from pathlib import Path
+import streamlit as st
+import gspread
+from google.oauth2.service_account import Credentials
 from datetime import datetime
 
-RESULTS_FILE = Path("results.json")
+SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
 
 
-def load_results() -> list[dict]:
+@st.cache_resource
+def get_worksheet():
     """
-    Load all saved quiz results from JSON.
-    Returns an empty list if the file does not exist yet.
+    Authenticate once, return the first worksheet.
     """
-    if RESULTS_FILE.exists():
-        with RESULTS_FILE.open("r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
+    creds_info = st.secrets["gcp_service_account"]
+    creds = Credentials.from_service_account_info(creds_info, scopes=SCOPE)
+    client = gspread.authorize(creds)
+    sheet = client.open_by_key(st.secrets["SHEET_ID"])
+    return sheet.sheet1
 
 
 def save_result(name: str, score: int) -> None:
     """
-    Append a single result (name, score, date) to results.json.
+    Append (name, score, timestamp) to the Google Sheet.
     """
-    results = load_results()
-
-    results.append(
-        {
-            "name": name,
-            "score": score,
-            "date": datetime.now().isoformat(timespec="seconds"),
-        }
+    ws = get_worksheet()
+    ws.append_row(
+        [name, score, datetime.now().isoformat(timespec="seconds")],
+        value_input_option="USER_ENTERED"
     )
-
-    with RESULTS_FILE.open("w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2)
