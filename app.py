@@ -1,14 +1,32 @@
 import streamlit as st # for web interfaces with Python
+from welcome_screen import welcome_screen
+from question_generator import generate_question
 
-def main():
-    st.title("Times Tables Quiz")
-    st.write("Welcome to Times Tables Quiz")
-    name = st.text_input("Enter your name")
+TOTAL_QUESTIONS = 10
 
-    if name:
-        st.success(f"Hello, {name}")
+def init_state() -> None:
+    """Set default values in session_state if they are missing."""
+    st.session_state.setdefault("screen", "welcome")
+    st.session_state.setdefault("name", "")
+    st.session_state.setdefault("question_number", 1)
+    st.session_state.setdefault("score", 0)
+    st.session_state.setdefault("question", None)
+    st.session_state.setdefault("saved", False)
+    st.session_state.setdefault("total_questions", TOTAL_QUESTIONS)
+
+
+def main() -> None:
+    init_state()
+
+    screen = st.session_state.screen
+
+    if screen == "welcome":
+        welcome_screen()
     else:
-        st.info("Please type your name to begin")
+        # Fallback – go back to welcome if something weird happens
+        st.session_state.screen = "welcome"
+        st.rerun()
+
 
 if __name__ == "__main__":
     main()
