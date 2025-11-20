@@ -1,5 +1,4 @@
-# question_generator.py
-import random
+import random # to generate random values
 
 
 def generate_question() -> tuple[int, int, int]:

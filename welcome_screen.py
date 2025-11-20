@@ -1,4 +1,4 @@
-import streamlit as st
+import streamlit as st # web apps with Python
 
 def is_valid_name(name: str) -> bool:
     """

@@ -1,5 +1,4 @@
-# app.py
-import streamlit as st
+import streamlit as st # to make web apps with Python
 
 from welcome_screen import welcome_screen
 from quiz_screen import quiz_screen
@@ -32,7 +31,6 @@ def main() -> None:
     elif screen == "end":
         end_screen()
     else:
-        # Fallback – go back to welcome if something weird happens
         st.session_state.screen = "welcome"
         st.rerun()
 

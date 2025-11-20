@@ -1,8 +1,8 @@
-# storage.py
-import streamlit as st
-import gspread
-from google.oauth2.service_account import Credentials
-from datetime import datetime
+import streamlit as st # to make a Streamlit app
+import gspread # Google Sheets access
+from google.oauth2.service_account import Credentials # Google auth
+from datetime import datetime # Date/time
+
 
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
 

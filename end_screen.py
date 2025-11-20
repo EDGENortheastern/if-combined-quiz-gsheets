@@ -1,5 +1,4 @@
-# end_screen.py
-import streamlit as st
+import streamlit as st # web apps with Python
 from storage import save_result
 
 
@@ -11,14 +10,12 @@ def end_screen() -> None:
     st.title("Quiz complete!")
     st.subheader(f"{name}, your score is {score} / {total}")
 
-    # Save once per quiz run
     if not st.session_state.saved:
         save_result(name, score)
         st.session_state.saved = True
         st.success("Your result has been saved.")
 
     if st.button("Play again"):
-        # Reset quiz state
         st.session_state.question_number = 1
         st.session_state.score = 0
         st.session_state.question = None
